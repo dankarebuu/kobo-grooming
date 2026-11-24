@@ -1,0 +1,177 @@
+@import "tailwindcss";
+
+@theme {
+  /* Color Palette — Cast-Iron & Mineral Daylight */
+  --color-plaster: #ECEBE7;
+  --color-paper: #F5F4F0;
+  --color-stone: #E2E0DA;
+  --color-hairline: #CFCBC2;
+  --color-hairline-strong: #ABA69B;
+
+  --color-ink: #15171A;
+  --color-ink-secondary: #474B52;
+  --color-ink-muted: #5D626B;
+
+  --color-iron: #15171A;
+  --color-iron-elevated: #1F2227;
+  --color-iron-border: #2C3038;
+  --color-iron-ink: #F5F4F0;
+  --color-iron-secondary: #B6B9BF;
+  --color-iron-muted: #8E939C;
+
+  --color-cypress: #1C3B2E;
+  --color-cypress-hover: #142C22;
+  --color-cypress-soft: rgba(28, 59, 46, 0.08);
+
+  --color-brass: #B99768;
+  --color-brass-soft: rgba(185, 151, 104, 0.14);
+
+  --color-status-live: #1E7A4C;
+  --color-status-live-dark: #4ADE80;
+  --color-status-error: #B91C1C;
+  --color-status-error-dark: #F87171;
+
+  /* Typography */
+  --font-serif: "Shippori Mincho", Georgia, serif;
+  --font-sans: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "Fragment Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Motion */
+  --ease-architectural: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    scroll-padding-bottom: 5.5rem;
+    background-color: var(--color-plaster);
+    color: var(--color-ink);
+    color-scheme: light;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: var(--color-plaster);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  /* Crisp cypress focus-visible outline on daylight; brushed brass inside cast-iron bands */
+  :focus-visible {
+    outline: 2px solid var(--color-cypress);
+    outline-offset: 2px;
+  }
+
+  [data-surface="iron"] :focus-visible {
+    outline-color: var(--color-brass);
+  }
+}
+
+/* Fluid editorial display type tokens */
+.text-hero-display {
+  font-size: clamp(2.85rem, 6.2vw, 5.15rem);
+  text-wrap: balance;
+}
+
+.text-section-display {
+  font-size: clamp(2rem, 3.8vw, 3.25rem);
+  text-wrap: balance;
+}
+
+/* Tabular numerals for prices, durations, hours, and time slots */
+.tabular-data {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Natural architectural color photography treatment */
+.img-editorial {
+  filter: contrast(1.03) saturate(0.94);
+  transition:
+    filter 500ms var(--ease-architectural),
+    transform 600ms var(--ease-architectural),
+    opacity 320ms var(--ease-architectural);
+}
+
+.group:hover .img-editorial,
+.img-editorial:hover {
+  filter: contrast(1.06) saturate(1);
+}
+
+/* Architectural hairline grid fallback for image containers */
+.bg-architectural-fallback {
+  background-color: var(--color-stone);
+  background-image:
+    linear-gradient(to right, rgba(21, 23, 26, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(21, 23, 26, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+[data-surface="iron"] .bg-architectural-fallback {
+  background-color: var(--color-iron-elevated);
+  background-image:
+    linear-gradient(to right, rgba(245, 244, 240, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 244, 240, 0.07) 1px, transparent 1px);
+}
+
+/* Native <dialog> booking drawer top-layer & scroll containment */
+dialog.kobo-drawer {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: inherit;
+  overflow: hidden;
+}
+
+dialog.kobo-drawer:modal {
+  overscroll-behavior: contain;
+}
+
+dialog.kobo-drawer::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: transparent;
+}
+
+/* Live indicator pulse */
+@keyframes kobo-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+.animate-kobo-pulse {
+  animation: kobo-pulse 2.2s var(--ease-architectural) infinite;
+}
+
+[data-tab-hidden="true"] .animate-kobo-pulse {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
